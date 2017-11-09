@@ -18,7 +18,7 @@ public class LesslagCorePlugin implements IFMLLoadingPlugin
     @Override
     public String getModContainerClass()
     {
-        return null;
+        return "com.minecolonies.lesslag.LesslagMod";
     }
 
     @Override

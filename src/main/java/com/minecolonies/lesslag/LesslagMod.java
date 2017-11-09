@@ -1,34 +1,188 @@
 package com.minecolonies.lesslag;
 
-import net.minecraft.launchwrapper.Launch;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.DummyModContainer;
+import net.minecraftforge.fml.common.LoadController;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber
-@Mod(modid = LesslagMod.ID, name = LesslagMod.NAME, version = "1.0", useMetadata = true)
-public class LesslagMod
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
+
+public class LesslagMod extends DummyModContainer
 {
-    public static final String ID = "lesslag";
-    public static final String NAME = "Lesslag";
+    public static final String ID      = "lesslag";
+    public static final String NAME    = "Lesslag";
+    public static final String VERSION = "1.0";
+    private static Configuration config;
+    private static LesslagMod    instance;
 
-    /**
-     * Event handler for forge pre init event.
-     *
-     * @param event the forge pre init event.
-     */
-    @Mod.EventHandler
-    public void preInit(final FMLPreInitializationEvent event)
+    public LesslagMod()
     {
-        System.out.println("TEST:" + !Boolean.valueOf(Launch.blackboard.get("fml.deobfuscatedEnvironment").toString()));
+        super(new ModMetadata());
+        ModMetadata meta = getMetadata();
+        meta.modId = ID;
+        meta.name = NAME;
+        meta.version = VERSION;
+        meta.credits = "Sharkske for inspiration, and Oriondevelopment for the awesome ASM help =D";
+        meta.authorList = Arrays.asList("Asherslab");
+        meta.description = "A simple Coremod for increasing FPS by reducing Terrain Animations.";
+        meta.url = "http://minecolonies.com";
+        meta.screenshots = new String[0];
+        meta.logoFile = "";
 
-        final Configuration configuration = new Configuration(event.getSuggestedConfigurationFile());
-        configuration.load();
+        config = null;
+        File cfgFile = new File(Loader.instance().getConfigDir(), "lesslag.cfg");
+        config = new Configuration(cfgFile);
 
-        if (configuration.hasChanged())
+        syncConfig(true);
+
+        instance = this;
+    }
+
+    private static void syncConfig(final boolean load)
+    {
+
+        List<String> propOrder = new ArrayList();
+
+        if (!config.isChild && load)
         {
-            configuration.save();
+            config.load();
+        }
+
+        Property prop;
+
+        prop = config.get(CATEGORY_GENERAL, "allAnimations", false);
+        prop.setComment("Render this mod literally useless, I'd suggest not. but what-ever");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "waterAnimations", true);
+        prop.setComment("Whether to allow Water Animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "lavaAnimations", true);
+        prop.setComment("Whether to allow Lava Animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "clockAndCompassAnimations", true);
+        prop.setComment("Whether to allow Clock and Compass Animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "portalAnimations", false);
+        prop.setComment("Whether to allow Portal animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "fireAnimations", true);
+        prop.setComment("Whether to allow Fire animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "glassAnimations", false);
+        prop.setComment("Whether to allow glass animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "grassAnimations", false);
+        prop.setComment("Whether to allow grass animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "snowAnimations", false);
+        prop.setComment("Whether to allow snow animations or not");
+        propOrder.add(prop.getName());
+
+        prop = config.get(CATEGORY_GENERAL, "myceliumAnimations", false);
+        prop.setComment("Whether to allow mycelium animations or not");
+        propOrder.add(prop.getName());
+
+        config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
+
+        if (config.hasChanged())
+        {
+            config.save();
         }
     }
 
+    /**
+     * By subscribing to the OnConfigChangedEvent we are able to execute code when our config screens are closed.
+     * This implementation uses the optional configID string to handle multiple Configurations using one event handler.
+     */
+    @SubscribeEvent
+    public void onConfigChanged(OnConfigChangedEvent event)
+    {
+        if (getMetadata().modId.equals(event.getModID()))
+        {
+            if (Configuration.CATEGORY_GENERAL.equals(event.getConfigID()))
+            {
+                syncConfig(false);
+            }
+        }
+    }
+
+    @Subscribe
+    public void preInit(FMLPreInitializationEvent evt)
+    {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Override
+    public boolean registerBus(EventBus bus, LoadController controller)
+    {
+        bus.register(this);
+        return true;
+    }
+
+    @Override
+    public void setEnabledState(final boolean enabled)
+    {
+        super.setEnabledState(enabled);
+    }
+
+    @Override
+    public Disableable canBeDisabled()
+    {
+        return Disableable.NEVER;
+    }
+
+    public static Configuration getConfig()
+    {
+        return config;
+    }
+
+    public static LesslagMod getInstance()
+    {
+        return instance;
+    }
+
+    @Override
+    public String getVersion()
+    {
+        return VERSION;
+    }
+
+    @Override
+    public String getName()
+    {
+        return NAME;
+    }
+
+    @Override
+    public String getModId()
+    {
+        return ID;
+    }
+
+    @Override
+    public String getGuiClassName()
+    {
+        return "com.minecolonies.lesslag.config.LesslagGuiFactory";
+    }
 }
