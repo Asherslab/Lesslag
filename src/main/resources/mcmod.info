@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "lesslag",
+    "name": "Lesslag",
+    "description": "Less lag by removing terrain animations",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Asherslab"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]
