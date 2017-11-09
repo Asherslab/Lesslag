@@ -7,13 +7,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TextureUtils
 {
-
-    public final List<TextureAtlasSprite> listAnimatedSprites = new ArrayList();
 
     public static final String BLOCKS = "minecraft:blocks/";
     public static final String ITEMS  = "minecraft:items/";
@@ -24,7 +19,7 @@ public class TextureUtils
     public static final String SNOW               = BLOCKS + "snow";
     public static final String GRASS_SIDE_SNOWED  = BLOCKS + "grass_side_snowed";
     public static final String MYCELIUM_SIDE      = BLOCKS + "mycelium_side";
-    public static final String MUCELIUM_TOP       = BLOCKS + "mycelium_top";
+    public static final String MYCELIUM_TOP       = BLOCKS + "mycelium_top";
     public static final String WATER_STILL        = BLOCKS + "water_still";
     public static final String WATER_FLOW         = BLOCKS + "water_flow";
     public static final String LAVA_STILL         = BLOCKS + "lava_still";
@@ -42,17 +37,61 @@ public class TextureUtils
     {
         TextureMap texturemap = getTextureMapBlocks();
 
-        if (Configurations.waterAnimations && (sprite == texturemap.getAtlasSprite(WATER_FLOW) || sprite == texturemap.getAtlasSprite(WATER_STILL)))
+        if (Configurations.getAllAnimations())
         {
             return true;
         }
 
-        if (Configurations.lavaAnimations && (sprite == texturemap.getAtlasSprite(LAVA_FLOW) || sprite == texturemap.getAtlasSprite(LAVA_STILL)))
+        if (Configurations.getWaterAnimations() && (sprite == texturemap.getAtlasSprite(WATER_FLOW)
+                                                      || sprite == texturemap.getAtlasSprite(WATER_STILL)))
         {
             return true;
         }
 
-        if (Configurations.clockAndCompassAnimations && (sprite == texturemap.getAtlasSprite(CLOCK) || sprite == texturemap.getAtlasSprite(COMPASS)))
+        if (Configurations.getLavaAnimations() && (sprite == texturemap.getAtlasSprite(LAVA_FLOW)
+                                                     || sprite == texturemap.getAtlasSprite(LAVA_STILL)))
+        {
+            return true;
+        }
+
+        if (Configurations.getClockAndCompassAnimations() && (sprite == texturemap.getAtlasSprite(CLOCK)
+                                                                || sprite == texturemap.getAtlasSprite(COMPASS)))
+        {
+            return true;
+        }
+
+        if (Configurations.getPortalAnimations() && (sprite == texturemap.getAtlasSprite(PORTAL)))
+        {
+            return true;
+        }
+
+        if (Configurations.getFireAnimations() && (sprite == texturemap.getAtlasSprite(FIRE_LAYER_0)
+                                                     || sprite == texturemap.getAtlasSprite(FIRE_LAYER_1)))
+        {
+            return true;
+        }
+
+        if (Configurations.getGlassAnimations() && (sprite == texturemap.getAtlasSprite(GLASS)
+                                                      || sprite == texturemap.getAtlasSprite(GLASS_PANE_TOP)))
+        {
+            return true;
+        }
+
+        if (Configurations.getGrassAnimations() && (sprite == texturemap.getAtlasSprite(GRASS_SIDE)
+                                                      || sprite == texturemap.getAtlasSprite(GRASS_SIDE_OVERLAY)
+                                                      || sprite == texturemap.getAtlasSprite(GRASS_TOP)))
+        {
+            return true;
+        }
+
+        if (Configurations.getSnowAnimations() && (sprite == texturemap.getAtlasSprite(SNOW)
+                                                     || sprite == texturemap.getAtlasSprite(GRASS_SIDE_SNOWED)))
+        {
+            return true;
+        }
+
+        if (Configurations.getMyceliumAnimations() && (sprite == texturemap.getAtlasSprite(MYCELIUM_SIDE)
+                                                         || sprite == texturemap.getAtlasSprite(MYCELIUM_TOP)))
         {
             return true;
         }

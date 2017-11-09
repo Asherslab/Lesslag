@@ -45,6 +45,7 @@ jar {
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 
+    /*
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
     
@@ -53,7 +54,7 @@ jar {
 
         // replace version and mcversion
         expand "version":project.version, "mcversion":project.minecraft.version
-    }
+    }*/
 }
 
 sourceSets {
