@@ -1,18 +1,36 @@
 package com.minecolonies.lesslag;
 
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.MixinEnvironment;
+import org.spongepowered.asm.mixin.Mixins;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @IFMLLoadingPlugin.TransformerExclusions({"com.minecolonies.lesslag"})
 @IFMLLoadingPlugin.SortingIndex(1001)
-@IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.MCVersion("1.12.2")
 public class LesslagCorePlugin implements IFMLLoadingPlugin
 {
+    public LesslagCorePlugin()
+    {
+        MixinBootstrap.init();
+
+        //-Dfml.coreMods.load=com.minecolonies.lesslag.LesslagCorePlugin
+
+        // Retrieves the DEFAULT mixin environment
+        MixinEnvironment.getDefaultEnvironment();
+
+        Mixins.addConfiguration("mixins.lesslag.json");
+    }
+
     @Override
     public String[] getASMTransformerClass()
     {
-        return new String[] {"com.minecolonies.lesslag.transformers.TextureMapTransformer"};
+        return new String[] {};
     }
 
     @Override

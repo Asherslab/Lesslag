@@ -16,15 +16,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
 public class LesslagMod extends DummyModContainer
 {
-    public static final String ID      = "lesslag";
-    public static final String NAME    = "Lesslag";
-    public static final String VERSION = "1.0";
+    public static final  String ID      = "lesslag";
+    private static final  String NAME    = "Lesslag";
+    private static final String VERSION = "1.0";
     private static Configuration config;
     private static LesslagMod    instance;
 
@@ -36,7 +37,7 @@ public class LesslagMod extends DummyModContainer
         meta.name = NAME;
         meta.version = VERSION;
         meta.credits = "Sharkske for inspiration, and Oriondevelopment for the awesome ASM help =D";
-        meta.authorList = Arrays.asList("Asherslab");
+        meta.authorList = Collections.singletonList("Asherslab");
         meta.description = "A simple Coremod for increasing FPS by reducing Terrain Animations.";
         meta.url = "http://minecolonies.com";
         meta.screenshots = new String[0];
@@ -54,7 +55,7 @@ public class LesslagMod extends DummyModContainer
     private static void syncConfig(final boolean load)
     {
 
-        List<String> propOrder = new ArrayList();
+        List<String> propOrder = new ArrayList<>();
 
         if (!config.isChild && load)
         {
