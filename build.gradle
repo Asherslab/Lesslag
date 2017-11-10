@@ -74,16 +74,6 @@ jar {
         attributes 'TweakOrder': 0
         attributes 'ForceLoadAsMod': true
     }
-    /*
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-    
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-
-        // replace version and mcversion
-        expand "version":project.version, "mcversion":project.minecraft.version
-    }*/
 
     from configurations.embed.collect {
         exclude 'META-INF/LICENSE.txt'
