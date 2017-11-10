@@ -9,7 +9,7 @@ import java.util.Map;
 
 @IFMLLoadingPlugin.TransformerExclusions({"com.minecolonies.lesslag"})
 @IFMLLoadingPlugin.SortingIndex(1001)
-@IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.MCVersion("1.11.2")
 public class LesslagCorePlugin implements IFMLLoadingPlugin
 {
     public LesslagCorePlugin()
